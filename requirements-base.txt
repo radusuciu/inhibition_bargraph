@@ -3,4 +3,5 @@ flask-migrate
 flask-sqlalchemy
 marshmallow
 pyyaml
+requests
 sqlalchemy
