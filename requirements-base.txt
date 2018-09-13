@@ -1,7 +1,6 @@
 flask
 flask-migrate
 flask-sqlalchemy
-marshmallow
 matplotlib
 numpy
 pyyaml
