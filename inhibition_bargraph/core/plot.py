@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import io
 
 matplotlib.rcParams['font.sans-serif'] = "Arial"
 matplotlib.rcParams['font.family'] = "sans-serif"
@@ -77,4 +78,7 @@ def plot_horizontal(source_url, name=None, whitelist=None, blacklist=None):
     plt.ylim(-1)
     plt.tight_layout()
 
-    plt.savefig('test.svg', format='svg')
+    memory_file = io.BytesIO()
+    plt.savefig(memory_file, format='svg')
+    memory_file.seek(0)
+    return memory_file
