@@ -8,6 +8,7 @@ app.config.from_object(config.config)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+from inhibition_bargraph.core.models import Experiment, Dataset
 
 # Register blueprints
 from inhibition_bargraph.views import home, api_blueprint
