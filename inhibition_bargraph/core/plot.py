@@ -16,7 +16,7 @@ matplotlib.rcParams.update(plot_defaults)
 
 
 class PlotData:
-    def __init__(self, source_url, name=None):
+    def __init__(self, source_url, name):
         self.source_url = source_url
         self.name = name
         self._data = self.init_data()
@@ -30,8 +30,6 @@ class PlotData:
     def init_data(self):
         """Helper initialization method which creates experiment if needed."""
         experiment = api.get_experiment(self.source_url) or api.new_experiment(self.source_url, self.name)
-        if not self.name:
-            self.name = experiment.name
         return api.get_dataset(experiment.experiment_id)
 
     def apply_whitelist(self, whitelist=None):
@@ -43,14 +41,11 @@ class PlotData:
             self._data = (r for r in self._data if r[0] not in blacklist)
 
 
-def plot_horizontal(source_url, name=None, whitelist=None, blacklist=None):
+def plot_horizontal(source_url, name, whitelist=None, blacklist=None):
     all_data = PlotData(source_url, name)
     all_data.apply_whitelist(whitelist)
     all_data.apply_blacklist(blacklist)
     symbols, ratios, stderrs = all_data.data
-
-    if not name:
-        name = all_data.name
 
     N = len(symbols)
 
