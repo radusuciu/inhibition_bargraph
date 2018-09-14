@@ -4,6 +4,7 @@ import requests
 
 DataItem = Union[str, int, float]
 Headers = List[str]
+Response = requests.models.Response
 
 
 entry_header_index_map: Dict[str, int] = {
@@ -29,7 +30,10 @@ entry_indices: Tuple[int] = tuple(entry_index_map.values())
 
 def get_dataset_from_url(url: str) -> Tuple[Headers, List[DataItem]]:
     """Get raw dataset from  given url."""
-    raw_dataset: str = requests.get(url).text
+    res: Response = requests.get(url)
+    # raise exception if the url is not found
+    res.raise_for_status()
+    raw_dataset: str = res.text
 
     flattened_dataset: List[DataItem] = []
     entry_header_data: List[str] = []
