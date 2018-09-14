@@ -3,10 +3,16 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import operator
 import io
 
-matplotlib.rcParams['font.sans-serif'] = "Arial"
-matplotlib.rcParams['font.family'] = "sans-serif"
+
+plot_defaults = {
+    'font.sans-serif': 'Arial',
+    'font.family': 'sans-serif'
+}
+
+matplotlib.rcParams.update(plot_defaults)
 
 
 class PlotData:
@@ -18,8 +24,8 @@ class PlotData:
     @property
     def data(self):
         # slicing from one index because the first index is uniprot
-        # zipping into three tuples containing list of symbols, ratios, stdevs
-        return tuple(zip(*(r[1:] for r in self._data)))
+        # zipping into three tuples containing list of symbols, ratios, stderrs
+        return tuple(zip(*(r[1:] for r in sorted(list(self._data), key=operator.itemgetter(2)) if r[2] > 0)))
 
     def init_data(self):
         """Helper initialization method which creates experiment if needed."""
@@ -41,14 +47,14 @@ def plot_horizontal(source_url, name=None, whitelist=None, blacklist=None):
     all_data = PlotData(source_url, name)
     all_data.apply_whitelist(whitelist)
     all_data.apply_blacklist(blacklist)
-    symbols, ratios, stdevs = all_data.data
+    symbols, ratios, stderrs = all_data.data
 
     if not name:
         name = all_data.name
 
     N = len(symbols)
 
-    ind = np.arange(N)
+    indices = np.arange(N)
     height = 0.4
 
     fig, ax = plt.subplots()
@@ -60,13 +66,12 @@ def plot_horizontal(source_url, name=None, whitelist=None, blacklist=None):
         'capthick': 0.5
     }
 
-    pos = ind + (height + 0.1)
-    ax.barh(pos, ratios, height, xerr=stdevs, error_kw=error_kw, color='k', label=name)
+    ax.barh(indices, ratios, height, xerr=stderrs, error_kw=error_kw, color='k', label=name)
 
     # add some text for labels, title and axes ticks
     ax.set_xlabel('Ratio')
 
-    ax.set_yticks(ind)
+    ax.set_yticks(indices)
     ax.tick_params(direction='out')
     ax.get_xaxis().tick_bottom()
     ax.get_yaxis().tick_left()
