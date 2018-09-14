@@ -1,5 +1,4 @@
 from typing import Union, List, Iterable, Tuple, Dict
-import itertools
 import requests
 
 DataItem = Union[str, int, float]
