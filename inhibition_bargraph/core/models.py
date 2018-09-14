@@ -5,6 +5,7 @@ from sqlalchemy import func
 Column = db.Column
 Text = db.Text
 Integer = db.Integer
+Float = db.Float
 Numeric = db.Numeric
 
 
@@ -29,10 +30,10 @@ class Dataset(db.Model):
     description = Column(Text)
     symbol = Column(Text, index=True)
     sequence = Column(Text, index=True)
-    mass = Column(Numeric)
-    ratio = Column(Numeric, index=True)
+    mass = Column(Float)
+    ratio = Column(Float, index=True)
     stats = Column(Text)
-    run = Column(Numeric)
-    charge = Column(Numeric)
-    segment = Column(Numeric)
+    run = Column(Integer)
+    charge = Column(Integer)
+    segment = Column(Integer)
     link = Column(Text)
