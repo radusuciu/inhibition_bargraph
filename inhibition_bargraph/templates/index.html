@@ -2,6 +2,35 @@
 
 {% block content %}
 {% raw %}
-<div id="app">{{ message }}</div>
+<div id="app" class="ui container">
+    <h1 class="ui header">
+        Inhibition bargraph generator
+        <div class="sub header">A sytem for automatic processing of mass spec data.</div>
+    </h1>
+    <div class="ui two column grid">
+        <div class="column">
+            <form class="ui form">
+                <div class="field">
+                    <label>URL to combined_dta.txt file</label>
+                    <input type="text" name="source_url">
+                </div>
+                <div class="field">
+                    <label>Data name</label>
+                    <input type="text" name="name">
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input name="invert" type="checkbox">
+                        <label>Invert Ratios</label>
+                    </div>
+                </div>
+                <button class="ui button" type="submit">Submit</button>
+            </form>
+        </div>
+        <div class="column">
+            <img class="result" src="/api/plot" />
+        </div>
+    </div>
+</div>
 {% endraw %}
 {% endblock %}
