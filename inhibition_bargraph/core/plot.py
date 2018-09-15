@@ -41,7 +41,7 @@ class PlotData:
             self._data = (r for r in self._data if r[0] not in blacklist)
 
 
-def plot_horizontal(source_url, name, whitelist=None, blacklist=None):
+def plot_horizontal(source_url, name, file_type, whitelist=None, blacklist=None):
     all_data = PlotData(source_url, name)
     all_data.apply_whitelist(whitelist)
     all_data.apply_blacklist(blacklist)
@@ -79,6 +79,6 @@ def plot_horizontal(source_url, name, whitelist=None, blacklist=None):
     plt.tight_layout()
 
     memory_file = io.BytesIO()
-    plt.savefig(memory_file, format='svg')
+    plt.savefig(memory_file, format=file_type)
     memory_file.seek(0)
     return memory_file
