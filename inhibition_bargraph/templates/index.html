@@ -1,36 +1,46 @@
 {% extends "layout.html" %}
 
 {% block content %}
-{% raw %}
 <div id="app" class="ui container">
     <h1 class="ui header">
         Inhibition bargraph generator
-        <div class="sub header">A sytem for automatic processing of mass spec data.</div>
+        <div class="sub header">Generates serine hydrolase inhibition plots from combined_dta.txt files</div>
     </h1>
-    <div class="ui two column grid">
-        <div class="column">
-            <form class="ui form">
-                <div class="field">
-                    <label>URL to combined_dta.txt file</label>
-                    <input type="text" name="source_url">
-                </div>
-                <div class="field">
-                    <label>Data name</label>
-                    <input type="text" name="name">
-                </div>
-                <div class="field">
-                    <div class="ui checkbox">
-                        <input name="invert" type="checkbox">
-                        <label>Invert Ratios</label>
-                    </div>
-                </div>
-                <button class="ui button" type="submit">Submit</button>
-            </form>
+    <form class="ui form">
+        <div class="required field">
+            <label>URL to combined_dta.txt file</label>
+            <input type="text" name="source_url" value="{{ request.args.get('source_url', '') }}" required>
         </div>
-        <div class="column">
-            <img class="result" src="/api/plot" />
+        <div class="field">
+            <label>Data name (for use in legend)</label>
+            <input type="text" name="name" value="{{ request.args.get('name', '') }}">
         </div>
-    </div>
+        <div class="field">
+            <div class="ui checkbox">
+                <input name="inverse" type="checkbox" {% if request.args.get('inverse') == 'on' %} checked="checked" {% endif %}>
+                <label>Invert Ratios</label>
+            </div>
+        </div>
+        <div class="inline fields">
+            <label for="orientation">Orientation</label>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="orientation" {% if not request.args.get('orientation') or request.args.get('orientation') == 'vertical' %} checked="checked" {% endif %} tabindex="0" value="vertical">
+                    <label>Vertical</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="orientation" {% if request.args.get('orientation') == 'horizontal' %} checked="checked" {% endif %} tabindex="0" value="horizontal">
+                    <label>Horizontal</label>
+                </div>
+            </div>
+        </div>
+        <button class="ui button" type="submit">Submit</button>
+    </form>
+    <div class="ui horizontal divider"></div>
+    {% if plot_href %}
+    <img class="result" src="{{ plot_href }}" />
+    {% endif %}
 </div>
-{% endraw %}
 {% endblock %}
