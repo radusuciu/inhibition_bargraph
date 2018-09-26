@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify, send_file, request
 from werkzeug import secure_filename
 from http import HTTPStatus
-from inhibition_bargraph.core.plot import plot_horizontal
+from inhibition_bargraph.core.plot import plot
+from inhibition_bargraph.core.exceptions import DatasetNotFound
+from sqlalchemy.exc import DBAPIError
 import inhibition_bargraph.core.whitelist as whitelist
 import inhibition_bargraph.core.blacklist as blacklist
 import inhibition_bargraph.api as api
@@ -30,7 +32,13 @@ def generate_plot(url):
     )
 
 
-@api_blueprint.errorhandler(Exception)
+@api_blueprint.errorhandler(DBAPIError)
 def error_response(error):
     payload = 'error'
+    api.db.session.rollback()
     return jsonify(payload), 500
+
+@api_blueprint.errorhandler(DatasetNotFound)
+def dataset_not_found(error):
+    payload = 'dataset not found'
+    return jsonify(payload), 404

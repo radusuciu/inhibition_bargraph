@@ -1,4 +1,5 @@
 from typing import Union, List, Iterable, Tuple, Dict
+from inhibition_bargraph.core.exceptions import DatasetNotFound
 import requests
 
 DataItem = Union[str, int, float]
@@ -31,7 +32,11 @@ def get_dataset_from_url(url: str) -> Tuple[Headers, List[DataItem]]:
     """Get raw dataset from  given url."""
     res: Response = requests.get(url)
     # raise exception if the url is not found
-    res.raise_for_status()
+    try:
+        res.raise_for_status()
+    except requests.exceptions.HTTPError:
+        raise DatasetNotFound
+
     raw_dataset: str = res.text
 
     flattened_dataset: List[DataItem] = []

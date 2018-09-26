@@ -18,5 +18,4 @@ app.register_blueprint(api_blueprint, url_prefix='/api')
 
 @app.errorhandler(Exception)
 def internal_error(error):
-    db.session.rollback()
     return render_template('error.html', error=error), 500
