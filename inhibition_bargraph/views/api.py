@@ -9,6 +9,7 @@ import inhibition_bargraph.core.blacklist as blacklist
 import inhibition_bargraph.api as api
 
 
+
 api_blueprint = Blueprint('api_blueprint', __name__)
 
 @api_blueprint.route('/plot/<path:url>')
@@ -18,10 +19,12 @@ def generate_plot(url):
     file_type = request.args.get('type')
     file_type = file_type if file_type in ('png', 'svg') else 'svg'
 
-    memory_file = plot_horizontal(
+    memory_file = plot(
         source_url=url,
         name=secure_filename(name),
         file_type=file_type,
+        orientation=request.args.get('orientation'),
+        inverse=request.args.get('inverse') == 'on',
         whitelist=whitelist.human_serine_hydrolases,
         blacklist=blacklist.human_serine_hydrolases
     )

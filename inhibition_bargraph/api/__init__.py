@@ -10,7 +10,7 @@ import math
 def get_experiment(source_url):
     return Experiment.query.filter_by(source_url=source_url).first()
     
-def get_dataset(experiment_id, inverse=True):
+def get_dataset(experiment_id, inverse):
     flat_dataset = db.session.query(
         Dataset.uniprot, Dataset.symbol, Dataset.ratio
     ).filter_by(dataset_id=experiment_id).order_by(Dataset.uniprot).all()
