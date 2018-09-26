@@ -38,7 +38,10 @@ def get_dataset_from_url(url: str) -> Tuple[Headers, List[DataItem]]:
         raise DatasetNotFound
 
     raw_dataset: str = res.text
+    return flatten(raw_dataset)
 
+
+def flatten(raw_dataset: str) -> Tuple[Headers, List[DataItem]]:
     flattened_dataset: List[DataItem] = []
     entry_header_data: List[str] = []
 
@@ -50,5 +53,4 @@ def get_dataset_from_url(url: str) -> Tuple[Headers, List[DataItem]]:
             flattened_dataset.append(
                 entry_header_data + [split_line[i] for i in entry_indices]
             )
-
     return (headers, flattened_dataset)
