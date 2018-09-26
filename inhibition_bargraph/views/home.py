@@ -10,7 +10,6 @@ home = Blueprint('home', __name__,
 
 @home.route('/')
 def index():
-    bootstrap = None
     plot_href = None
 
     if request.args.get('source_url'):
@@ -19,7 +18,7 @@ def index():
         plot_href = '/api/plot/{}?{}'.format(request.args.get('source_url'), args_to_pass)
         print(plot_href)
 
-    return render_template('index.html', bootstrap=bootstrap, plot_href=plot_href)
+    return render_template('index.html', plot_href=plot_href)
 
 @home.before_app_first_request
 def create_db():
