@@ -1,8 +1,0 @@
-flask
-flask-sqlalchemy
-gunicorn
-matplotlib
-numpy
-pyyaml
-requests
-sqlalchemy

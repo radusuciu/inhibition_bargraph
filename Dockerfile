@@ -1,14 +1,10 @@
-FROM python:3.7.0-stretch
+FROM python:3.7.0-slim-stretch
 
 MAINTAINER Radu Suciu <radusuciu@gmail.com>
 
-# Create user with non-root privileges
 RUN adduser --disabled-password --gecos '' bar
 RUN chown -R bar /home/bar
-
-# install some deps
-RUN apt-get update && apt-get -y install \
-    fonts-liberation
+RUN pip install pipenv
 
 USER bar
 WORKDIR /home/bar/bar
