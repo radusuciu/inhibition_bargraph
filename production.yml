@@ -1,0 +1,8 @@
+version: '3.6'
+
+services:
+    bargraph:
+        environment:
+            DEBUG: 'false'
+            FLASK_DEBUG: 0
+            FLASK_ENV: 'production'

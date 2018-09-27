@@ -1,0 +1,18 @@
+version: '3.6'
+
+services:
+    bargraph:
+        build: .
+        environment:
+            DEBUG: 'true'
+            FLASK_DEBUG: 1
+            FLASK_ENV: 'development'
+            LC_ALL: 'C.UTF-8'
+            LANG: 'C.UTF-8'
+            FLASK_APP: 'inhibition_bargraph/__init__.py'
+        volumes:
+            - .:/home/bar/bar
+        ports:
+            - '5000:5000'
+        tty: true
+        stdin_open: true
