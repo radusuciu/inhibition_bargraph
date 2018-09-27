@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from http import HTTPStatus
 import config.config as config
 
@@ -8,7 +7,6 @@ app = Flask(__name__)
 app.config.from_object(config.config)
 
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 from inhibition_bargraph.core.models import Experiment, Dataset
 
 # Register blueprints
